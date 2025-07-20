@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Channel {
+  id          String   @id @default(cuid())
+  name        String
+  channelId   String   @unique
+  url         String
+  description String?
+  language    String   @default("en")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  videos      Video[]
+  
+  @@map("channels")
+}
+
+model Video {
+  id              String   @id @default(cuid())
+  videoId         String   @unique
+  title           String
+  description     String?
+  url             String
+  duration        String?
+  publishedAt     DateTime
+  thumbnail       String?
+  transcriptRaw   String?
+  transcriptClean String?
+  summary         String?
+  category        Category @default(UNCATEGORIZED)
+  priority        Priority @default(MEDIUM)
+  isProcessed     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relaciones
+  channelId       String
+  channel         Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  tools           Tool[]
+  news            NewsItem[]
+  
+  @@map("videos")
+}
+
+model Tool {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  category    ToolCategory
+  url         String?
+  pricing     String?
+  features    String[]
+  isNew       Boolean    @default(true)
+  isNotified  Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  // Relaciones
+  videoId     String
+  video       Video      @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  @@map("tools")
+}
+
+model NewsItem {
+  id          String   @id @default(cuid())
+  title       String
+  summary     String
+  importance  Priority @default(MEDIUM)
+  isNotified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  videoId     String
+  video       Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  @@map("news_items")
+}
+
+model ProcessingQueue {
+  id          String      @id @default(cuid())
+  videoId     String
+  status      QueueStatus @default(PENDING)
+  attempts    Int         @default(0)
+  error       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@map("processing_queue")
+}
+
+// Enums
+enum Category {
+  TOOLS
+  NEWS
+  TUTORIAL
+  RESEARCH
+  STARTUP
+  UNCATEGORIZED
+}
+
+enum ToolCategory {
+  VIDEO
+  IMAGE
+  TEXT
+  AUDIO
+  CODE
+  DATA
+  DESIGN
+  PRODUCTIVITY
+  OTHER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum QueueStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
