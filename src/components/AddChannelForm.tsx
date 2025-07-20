@@ -64,18 +64,20 @@ export function AddChannelForm({ onChannelAdded }: AddChannelFormProps) {
   }
 
   return (
-    <Card>
+    <Card className="glass-card border-0">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <Youtube className="h-5 w-5 text-red-600" />
-          <span>Agregar Canal</span>
+        <CardTitle className="flex items-center space-x-3 text-white">
+          <div className="p-2 bg-red-500/20 rounded-xl">
+            <Youtube className="h-5 w-5 text-red-400" />
+          </div>
+          <span className="font-semibold">Agregar Canal</span>
         </CardTitle>
       </CardHeader>
       
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="channel-url" className="text-sm font-medium">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-3">
+            <label htmlFor="channel-url" className="text-sm font-medium text-white/90 block">
               URL del Canal de YouTube
             </label>
             <Input
@@ -85,20 +87,21 @@ export function AddChannelForm({ onChannelAdded }: AddChannelFormProps) {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               disabled={isLoading}
+              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/15 focus:border-blue-400/50"
             />
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-white/60">
               Puedes usar cualquier formato de URL de YouTube (canal, @handle, /c/, /user/)
             </div>
           </div>
 
           {error && (
-            <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
+            <div className="text-sm text-red-400 bg-red-500/10 border border-red-400/20 p-3 rounded-xl backdrop-blur-md">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
+            <div className="text-sm text-green-400 bg-green-500/10 border border-green-400/20 p-3 rounded-xl backdrop-blur-md">
               {success}
             </div>
           )}
@@ -106,22 +109,29 @@ export function AddChannelForm({ onChannelAdded }: AddChannelFormProps) {
           <Button 
             type="submit" 
             disabled={isLoading || !url.trim()}
-            className="w-full flex items-center space-x-2"
+            className="w-full btn-apple hover-lift flex items-center space-x-2 h-12"
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="h-5 w-5" />
             <span>{isLoading ? 'Agregando...' : 'Agregar Canal'}</span>
           </Button>
         </form>
 
-        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-          <div className="text-sm text-blue-800">
-            <div className="font-medium mb-1">Canales recomendados:</div>
-            <div className="text-xs space-y-1">
-              <div>• @CreatorMagicAI</div>
-              <div>• @theAIsearch</div>
-              <div>• @AIJasonZ</div>
-              <div>• @curiousrefuge</div>
-              <div>• @DotCSVLab</div>
+        <div className="mt-6 p-4 bg-blue-500/10 border border-blue-400/20 rounded-xl backdrop-blur-md">
+          <div className="text-sm">
+            <div className="font-semibold mb-3 text-blue-400 flex items-center space-x-2">
+              <span>✨</span>
+              <span>Canales recomendados:</span>
+            </div>
+            <div className="grid grid-cols-1 gap-2 text-xs">
+              {['@CreatorMagicAI', '@theAIsearch', '@AIJasonZ', '@curiousrefuge', '@DotCSVLab'].map((channel) => (
+                <button
+                  key={channel}
+                  onClick={() => setUrl(`https://www.youtube.com/${channel}`)}
+                  className="text-left text-white/70 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-colors"
+                >
+                  • {channel}
+                </button>
+              ))}
             </div>
           </div>
         </div>

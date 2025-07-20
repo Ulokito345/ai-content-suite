@@ -30,94 +30,104 @@ export function VideoCard({ video, onProcess, showProcessButton = false }: Video
   }
 
   return (
-    <Card className="group hover:shadow-lg transition-shadow duration-200">
+    <Card className="glass-card hover-lift border-0 group">
       <CardHeader className="p-0">
-        <div className="relative aspect-video rounded-t-lg overflow-hidden">
+        <div className="relative aspect-video rounded-t-2xl overflow-hidden">
           {video.thumbnail ? (
             <Image
               src={video.thumbnail}
               alt={video.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-200"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <Play className="h-12 w-12 text-gray-400" />
+            <div className="w-full h-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center">
+              <Play className="h-12 w-12 text-white/50" />
             </div>
           )}
           
           {/* Overlay with duration */}
           {video.duration && (
-            <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs flex items-center space-x-1">
-              <Clock className="h-3 w-3" />
-              <span>{formatDuration(video.duration)}</span>
+            <div className="absolute bottom-3 right-3 glass px-3 py-1 rounded-full text-xs flex items-center space-x-2">
+              <Clock className="h-3 w-3 text-white/90" />
+              <span className="text-white/90 font-medium">{formatDuration(video.duration)}</span>
             </div>
           )}
 
           {/* Category badge */}
-          <div className="absolute top-2 left-2">
-            <Badge variant="secondary" className="bg-white/90 text-black">
+          <div className="absolute top-3 left-3">
+            <Badge className="glass border-0 text-white/90 backdrop-blur-md">
               {getCategoryIcon(video.category)} {video.category}
             </Badge>
           </div>
 
           {/* Priority badge */}
           {video.priority !== 'MEDIUM' && (
-            <div className="absolute top-2 right-2">
-              <Badge className={getPriorityBadgeColor(video.priority)}>
+            <div className="absolute top-3 right-3">
+              <Badge className={`${getPriorityBadgeColor(video.priority)} border-0 backdrop-blur-md`}>
                 {video.priority}
               </Badge>
             </div>
           )}
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </div>
       </CardHeader>
 
-      <CardContent className="p-4">
-        <div className="space-y-3">
+      <CardContent className="p-6">
+        <div className="space-y-4">
           {/* Channel name */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-white/60 font-medium">
             {video.channel?.name || 'Canal desconocido'}
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-gray-900 line-clamp-2 leading-tight">
+          <h3 className="font-semibold text-white line-clamp-2 leading-tight text-lg">
             {video.title}
           </h3>
 
           {/* Summary if available */}
           {video.summary && (
-            <p className="text-sm text-gray-600 line-clamp-3">
+            <p className="text-sm text-white/70 line-clamp-3 leading-relaxed">
               {video.summary}
             </p>
           )}
 
           {/* Tools and news count */}
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            <div className="flex space-x-3">
+          <div className="flex items-center justify-between text-xs">
+            <div className="flex space-x-4">
               {video.tools && video.tools.length > 0 && (
-                <span>🔧 {video.tools.length} herramientas</span>
+                <div className="flex items-center space-x-1 px-2 py-1 bg-blue-500/20 rounded-full">
+                  <span className="text-blue-400">🔧</span>
+                  <span className="text-white/80">{video.tools.length}</span>
+                </div>
               )}
               {video.news && video.news.length > 0 && (
-                <span>📰 {video.news.length} noticias</span>
+                <div className="flex items-center space-x-1 px-2 py-1 bg-green-500/20 rounded-full">
+                  <span className="text-green-400">📰</span>
+                  <span className="text-white/80">{video.news.length}</span>
+                </div>
               )}
             </div>
-            <span>{formatDate(video.publishedAt)}</span>
+            <span className="text-white/50 font-medium">{formatDate(video.publishedAt)}</span>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between pt-3 border-t border-white/10">
             <Button
               variant="outline"
               size="sm"
               asChild
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover-lift"
             >
               <a 
                 href={video.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center space-x-1"
+                className="flex items-center space-x-2"
               >
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-4 w-4" />
                 <span>Ver video</span>
               </a>
             </Button>
@@ -127,15 +137,15 @@ export function VideoCard({ video, onProcess, showProcessButton = false }: Video
                 size="sm"
                 onClick={handleProcess}
                 disabled={isProcessing}
-                className="flex items-center space-x-1"
+                className="btn-apple hover-lift flex items-center space-x-2"
               >
-                <Zap className="h-3 w-3" />
+                <Zap className="h-4 w-4" />
                 <span>{isProcessing ? 'Procesando...' : 'Procesar'}</span>
               </Button>
             )}
 
             {video.isProcessed && (
-              <Badge variant="outline" className="text-green-600 border-green-600">
+              <Badge className="bg-green-500/20 border-green-400/50 text-green-400 border backdrop-blur-md">
                 ✓ Procesado
               </Badge>
             )}

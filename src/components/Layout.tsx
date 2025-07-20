@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { Menu, Home, Youtube, Settings, Search, Cpu } from 'lucide-react'
+import { Menu, Home, Youtube, Settings, Search, Cpu, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
@@ -24,18 +24,21 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-white/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="glass sticky top-0 z-50 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Cpu className="h-8 w-8 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">AI Content Suite</h1>
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Sparkles className="h-8 w-8 text-gradient" />
+                  <div className="absolute inset-0 h-8 w-8 bg-blue-500/20 rounded-full blur-lg"></div>
+                </div>
+                <h1 className="text-xl font-bold text-gradient">AI Content Suite</h1>
               </div>
             </div>
             
             {/* Navigation for larger screens */}
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex space-x-2">
               {navigation.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
@@ -45,10 +48,10 @@ export function Layout({ children }: LayoutProps) {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      'flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                      'flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover-lift',
                       isActive
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        ? 'bg-blue-500/20 text-blue-400 shadow-lg shadow-blue-500/20'
+                        : 'text-white/70 hover:text-white hover:bg-white/10'
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -59,21 +62,21 @@ export function Layout({ children }: LayoutProps) {
             </nav>
 
             {/* Mobile menu button */}
-            <button className="md:hidden p-2">
-              <Menu className="h-6 w-6" />
+            <button className="md:hidden p-2 rounded-xl hover:bg-white/10 transition-colors">
+              <Menu className="h-6 w-6 text-white" />
             </button>
           </div>
         </div>
       </header>
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 fade-in">
         {children}
       </main>
 
       {/* Mobile navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t">
-        <div className="flex justify-around">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 glass border-t border-white/10 pb-safe">
+        <div className="flex justify-around px-2 py-2">
           {navigation.slice(0, 4).map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
@@ -83,14 +86,14 @@ export function Layout({ children }: LayoutProps) {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'flex flex-col items-center py-2 px-3 text-xs',
+                  'flex flex-col items-center py-2 px-3 text-xs rounded-xl transition-all duration-200',
                   isActive
-                    ? 'text-blue-600'
-                    : 'text-gray-600'
+                    ? 'text-blue-400 bg-blue-500/20'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
                 )}
               >
                 <Icon className="h-5 w-5 mb-1" />
-                <span>{item.name}</span>
+                <span className="font-medium">{item.name}</span>
               </Link>
             )
           })}

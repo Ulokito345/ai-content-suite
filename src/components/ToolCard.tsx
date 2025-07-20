@@ -21,20 +21,22 @@ interface ToolCardProps {
 
 export function ToolCard({ tool }: ToolCardProps) {
   return (
-    <Card className="group hover:shadow-lg transition-shadow duration-200">
-      <CardHeader className="pb-2">
+    <Card className="glass-card hover-lift border-0 group">
+      <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-lg">
-              {getToolCategoryIcon(tool.category)}
-            </span>
-            <CardTitle className="text-lg leading-tight">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-blue-500/20 rounded-xl">
+              <span className="text-lg">
+                {getToolCategoryIcon(tool.category)}
+              </span>
+            </div>
+            <CardTitle className="text-lg leading-tight text-white font-semibold">
               {tool.name}
             </CardTitle>
           </div>
           
           {tool.isNew && (
-            <Badge className="bg-green-100 text-green-800 border-green-200">
+            <Badge className="bg-green-500/20 text-green-400 border-green-400/50 border backdrop-blur-md">
               <Star className="h-3 w-3 mr-1" />
               Nuevo
             </Badge>
@@ -45,20 +47,19 @@ export function ToolCard({ tool }: ToolCardProps) {
       <CardContent className="space-y-4">
         {/* Description */}
         {tool.description && (
-          <p className="text-sm text-gray-600 line-clamp-3">
+          <p className="text-sm text-white/70 line-clamp-3 leading-relaxed">
             {tool.description}
           </p>
         )}
 
-        {/* Category */}
+        {/* Category and Pricing */}
         <div className="flex items-center space-x-2">
-          <Badge variant="outline" className="text-xs">
+          <Badge className="bg-blue-500/20 text-blue-400 border-blue-400/50 border-0 text-xs backdrop-blur-md">
             {tool.category}
           </Badge>
           
-          {/* Pricing */}
           {tool.pricing && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge className="bg-purple-500/20 text-purple-400 border-purple-400/50 border-0 text-xs backdrop-blur-md">
               {tool.pricing}
             </Badge>
           )}
@@ -66,20 +67,19 @@ export function ToolCard({ tool }: ToolCardProps) {
 
         {/* Features */}
         {tool.features && tool.features.length > 0 && (
-          <div className="space-y-1">
-            <div className="text-xs font-medium text-gray-700">Características:</div>
+          <div className="space-y-2">
+            <div className="text-xs font-semibold text-white/80">Características:</div>
             <div className="flex flex-wrap gap-1">
               {tool.features.slice(0, 3).map((feature, index) => (
                 <Badge 
                   key={index} 
-                  variant="outline" 
-                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                  className="text-xs bg-white/10 text-white/80 border-white/20 border backdrop-blur-md"
                 >
                   {feature}
                 </Badge>
               ))}
               {tool.features.length > 3 && (
-                <Badge variant="outline" className="text-xs">
+                <Badge className="text-xs bg-white/5 text-white/60 border-white/20 border backdrop-blur-md">
                   +{tool.features.length - 3} más
                 </Badge>
               )}
@@ -89,30 +89,34 @@ export function ToolCard({ tool }: ToolCardProps) {
 
         {/* Source video info */}
         {tool.video && (
-          <div className="pt-2 border-t border-gray-100">
-            <div className="text-xs text-gray-500 space-y-1">
-              <div>Fuente: {tool.video.channel?.name || 'Canal desconocido'}</div>
-              <div className="line-clamp-1">{tool.video.title}</div>
-              <div>{formatDate(tool.video.publishedAt)}</div>
+          <div className="pt-3 border-t border-white/10">
+            <div className="text-xs text-white/60 space-y-1">
+              <div className="flex items-center space-x-1">
+                <span className="text-white/40">Fuente:</span>
+                <span className="text-white/70 font-medium">{tool.video.channel?.name || 'Canal desconocido'}</span>
+              </div>
+              <div className="line-clamp-1 text-white/60">{tool.video.title}</div>
+              <div className="text-white/50">{formatDate(tool.video.publishedAt)}</div>
             </div>
           </div>
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-3 border-t border-white/10">
           {tool.url ? (
             <Button
               variant="outline"
               size="sm"
               asChild
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover-lift"
             >
               <a 
                 href={tool.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center space-x-1"
+                className="flex items-center space-x-2"
               >
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-4 w-4" />
                 <span>Visitar</span>
               </a>
             </Button>
@@ -120,7 +124,7 @@ export function ToolCard({ tool }: ToolCardProps) {
             <div />
           )}
 
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-white/40 font-medium">
             {formatDate(tool.createdAt)}
           </div>
         </div>
