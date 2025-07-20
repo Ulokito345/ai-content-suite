@@ -9,6 +9,7 @@ export interface Channel {
   isActive: boolean
   createdAt: Date
   updatedAt: Date
+  videos?: Video[]
 }
 
 export interface Video {
