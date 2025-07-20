@@ -44,6 +44,8 @@ export interface Tool {
   isNew: boolean
   isNotified: boolean
   videoId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface NewsItem {
@@ -53,6 +55,8 @@ export interface NewsItem {
   importance: Priority
   isNotified: boolean
   videoId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export enum Category {
