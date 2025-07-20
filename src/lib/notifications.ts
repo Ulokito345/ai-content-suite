@@ -67,17 +67,7 @@ export class NotificationService {
         body: data.body,
         icon: data.icon || '/icon-192x192.png',
         badge: data.badge || '/icon-192x192.png',
-        data: data.data,
-        actions: [
-          {
-            action: 'view',
-            title: 'Ver'
-          },
-          {
-            action: 'dismiss',
-            title: 'Descartar'
-          }
-        ]
+        data: data.data
       })
     } else {
       // Fallback a notificación nativa
