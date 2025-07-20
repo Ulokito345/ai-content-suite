@@ -9,14 +9,14 @@ import { Badge } from '@/components/ui/badge'
 import { getToolCategoryIcon } from '@/lib/utils'
 import type { Tool, ToolCategory } from '@/types'
 
-const TOOL_CATEGORIES: ToolCategory[] = [
+const TOOL_CATEGORIES = [
   'VIDEO', 'IMAGE', 'TEXT', 'AUDIO', 'CODE', 'DATA', 'DESIGN', 'PRODUCTIVITY', 'OTHER'
-]
+] as const
 
 export default function ToolsPage() {
   const [tools, setTools] = useState<Tool[]>([])
   const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'ALL'>('ALL')
+  const [selectedCategory, setSelectedCategory] = useState<string>('ALL')
   const [showOnlyNew, setShowOnlyNew] = useState(false)
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function ToolsPage() {
   const toolCounts = TOOL_CATEGORIES.reduce((acc, category) => {
     acc[category] = tools.filter(tool => tool.category === category).length
     return acc
-  }, {} as Record<ToolCategory, number>)
+  }, {} as Record<string, number>)
 
   if (loading) {
     return (
